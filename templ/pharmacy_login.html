@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MedFind - Pharmacy Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>💊 MedFind</h1>
+    <p>Pharmacy Login</p>
+  </header>
+
+  <nav>
+    <a href="{{ url_for('customer_search') }}">Search Medicine</a>
+    <a href="{{ url_for('pharmacy_login') }}">Pharmacy Login</a>
+  </nav>
+
+  <div class="card">
+    <form method="post" action="{{ url_for('pharmacy_login') }}">
+      <label>Select your pharmacy</label>
+      <select name="pharmacy_id">
+        {% for ph in pharmacies %}
+          <option value="{{ ph.id }}">{{ ph.name }} ({{ ph.area }})</option>
+        {% endfor %}
+      </select>
+
+      <label>Password</label>
+      <input type="password" name="password" placeholder="Enter password">
+
+      <button type="submit">Login</button>
+    </form>
+
+    {% if error %}
+      <div class="error-msg">{{ error }}</div>
+    {% endif %}
+
+    <p style="font-size:11px; color:#999; margin-top:12px; text-align:center;">
+      Demo password for all pharmacies: 1234
+    </p>
+    <p style="font-size:12px; color:#999; margin-top:8px; text-align:center;">
+      New pharmacy? <a href="{{ url_for('pharmacy_signup') }}" style="color:#1a7f5a;">Sign up here</a>
+    </p>
+  </div>
+</div>
+</body>
+</html>

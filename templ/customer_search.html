@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MedFind - Search Medicine</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>💊 MedFind</h1>
+    <p>Find the right medicine, right place, right time</p>
+  </header>
+
+  <nav>
+    <a href="{{ url_for('customer_search') }}">Search Medicine</a>
+    <a href="{{ url_for('pharmacy_login') }}">Pharmacy Login</a>
+  </nav>
+
+  <div class="card">
+    <p id="locationStatus" style="font-size:12px; color:#999; margin-bottom:10px;">📍 Detecting your location...</p>
+
+    <form method="get" action="{{ url_for('customer_search') }}" id="searchForm">
+      <input type="hidden" name="lat" id="lat">
+      <input type="hidden" name="lng" id="lng">
+      <label>Search for a medicine</label>
+      <input type="text" name="q" value="{{ query }}" placeholder="e.g. Paracetamol, Crocin, ORS..." autofocus list="medicineSuggestions">
+      <datalist id="medicineSuggestions">
+        {% for med in medicine_names %}
+          <option value="{{ med }}">
+        {% endfor %}
+      </datalist>
+      <button type="submit">Search</button>
+    </form>
+
+    {% if query and not results %}
+      <p class="empty-msg">No pharmacy found with this medicine nearby</p>
+    {% endif %}
+
+    {% for item in results %}
+      {% set cls = 'available' if item.status == 'Available' else ('low' if item.status == 'Low Stock' else 'out') %}
+      <div class="result-item {{ cls }}">
+        <h3>{{ item.pharmacy_name }}</h3>
+        <p>{{ item.area }}{% if item.distance is not none %} &middot; {{ item.distance }} km away{% endif %}</p>
+        <p>Medicine: {{ item.medicine_name }} &middot; Price: ₹{{ item.price }}</p>
+        <span class="badge {{ cls }}">{{ item.status }}</span>
+        <p>Updated: {{ item.updated_at }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  const latInput = document.getElementById('lat');
+  const lngInput = document.getElementById('lng');
+  const statusText = document.getElementById('locationStatus');
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        latInput.value = pos.coords.latitude;
+        lngInput.value = pos.coords.longitude;
+        statusText.textContent = "📍 Location detected — results will be sorted by distance";
+      },
+      () => {
+        statusText.textContent = "📍 Location not available — enable it for distance-sorted results";
+      }
+    );
+  } else {
+    statusText.textContent = "";
+  }
+</script>
+</body>
+</html>

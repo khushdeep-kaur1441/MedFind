@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MedFind - Pharmacy Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>💊 MedFind</h1>
+    <p>Pharmacy Dashboard</p>
+  </header>
+
+  <nav>
+    <a href="{{ url_for('pharmacy_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('billing') }}">Billing</a>
+    <a href="{{ url_for('customer_search') }}">Customer View</a>
+  </nav>
+
+  <div class="top-bar">
+    <span>📍 {{ pharmacy_name }}</span>
+    <a href="{{ url_for('pharmacy_logout') }}"><button class="logout-btn">Logout</button></a>
+  </div>
+
+  {% if low_stock_items %}
+    <div class="low-stock-banner">
+      <strong>⚠️ {{ low_stock_items|length }} medicine(s) need attention</strong>
+      {% for item in low_stock_items %}
+        {{ item.medicine_name }} - {{ item.status }}{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="card">
+    <h3 style="margin-bottom:10px;">Add / Update Medicine</h3>
+    <form method="post" action="{{ url_for('update_stock') }}">
+      <label>Medicine name</label>
+      <input type="text" name="medicine_name" placeholder="e.g. Paracetamol 500mg" required>
+
+      <label>Quantity in stock</label>
+      <input type="number" name="quantity" min="0" placeholder="e.g. 10" required>
+
+      <label>Price per unit (₹)</label>
+      <input type="number" step="0.5" name="price" placeholder="e.g. 2.5" required>
+
+      <button type="submit">Save</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:10px;">Your Stock</h3>
+    {% if not stock_list %}
+      <p class="empty-msg">No medicines added yet</p>
+    {% endif %}
+
+    {% for item in stock_list %}
+      {% set cls = 'available' if item.status == 'Available' else ('low' if item.status == 'Low Stock' else 'out') %}
+      <div class="stock-item">
+        <div class="stock-item-header">
+          <strong>{{ item.medicine_name }}</strong>
+          <span class="badge {{ cls }}">{{ item.status }}</span>
+        </div>
+        <p style="font-size:13px; color:#666; margin-top:4px;">
+          Quantity: {{ item.quantity }} &middot; Price: ₹{{ item.price }} &middot; Updated: {{ item.updated_at }}
+        </p>
+        <div class="stock-bar-track">
+          <div class="stock-bar-fill {{ cls }}" style="width: {{ item.bar_percent }}%;"></div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MedFind - Billing</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>💊 MedFind</h1>
+    <p>Billing</p>
+  </header>
+
+  <nav>
+    <a href="{{ url_for('pharmacy_dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('billing') }}">Billing</a>
+    <a href="{{ url_for('customer_search') }}">Customer View</a>
+  </nav>
+
+  <div class="top-bar">
+    <span>📍 {{ pharmacy_name }}</span>
+    <a href="{{ url_for('pharmacy_logout') }}"><button class="logout-btn">Logout</button></a>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:10px;">Create Bill</h3>
+    <form method="post" action="{{ url_for('billing') }}">
+      <label>Customer name</label>
+      <input type="text" name="customer_name" placeholder="e.g. Ramesh Kumar" required>
+
+      <label>Customer age</label>
+      <input type="number" name="customer_age" min="0" placeholder="e.g. 35">
+
+      <label>Select medicine</label>
+      <select name="stock_id" required>
+        {% for item in stock_list %}
+          <option value="{{ item.id }}">{{ item.medicine_name }} (₹{{ item.price }}, {{ item.quantity }} in stock)</option>
+        {% endfor %}
+      </select>
+
+      <label>Quantity sold</label>
+      <input type="number" name="sell_qty" min="1" placeholder="e.g. 2" required>
+
+      <button type="submit">Generate Bill</button>
+    </form>
+
+    {% if error %}
+      <div class="error-msg">{{ error }}</div>
+    {% endif %}
+
+    {% if receipt %}
+      <div class="receipt">
+        <h3>🧾 Receipt</h3>
+        <div class="receipt-row"><span>Customer</span><span>{{ receipt.customer_name }}{% if receipt.customer_age %} ({{ receipt.customer_age }} yrs){% endif %}</span></div>
+        <div class="receipt-row"><span>Medicine</span><span>{{ receipt.medicine_name }}</span></div>
+        <div class="receipt-row"><span>Quantity</span><span>{{ receipt.quantity }}</span></div>
+        <div class="receipt-row"><span>Unit Price</span><span>₹{{ receipt.unit_price }}</span></div>
+        <div class="receipt-row receipt-total"><span>Total</span><span>₹{{ receipt.total }}</span></div>
+        <p style="font-size:11px; color:#999; margin-top:8px;">Date: {{ receipt.time }}</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:10px;">Recent Bills</h3>
+    {% if not recent_bills %}
+      <p class="empty-msg">No bills yet</p>
+    {% endif %}
+    {% for bill in recent_bills %}
+      <div class="result-item available">
+        <p>{{ bill.medicine_name }} × {{ bill.quantity }} — ₹{{ bill.total }}</p>
+        <p style="font-size:12px; color:#555;">Customer: {{ bill.customer_name }}{% if bill.customer_age %} ({{ bill.customer_age }} yrs){% endif %}</p>
+        <p style="font-size:11px; color:#999;">Date: {{ bill.created_at }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+</body>
+</html>

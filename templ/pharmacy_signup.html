@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MedFind - Pharmacy Sign Up</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>💊 MedFind</h1>
+    <p>Register Your Pharmacy</p>
+  </header>
+
+  <nav>
+    <a href="{{ url_for('customer_search') }}">Search Medicine</a>
+    <a href="{{ url_for('pharmacy_login') }}">Pharmacy Login</a>
+  </nav>
+
+  <div class="card">
+    <form method="post" action="{{ url_for('pharmacy_signup') }}">
+      <label>Pharmacy name</label>
+      <input type="text" name="name" placeholder="e.g. Ramesh Medical Store" required>
+
+      <label>Area / Location</label>
+      <input type="text" name="area" placeholder="e.g. Near Bus Stand" required>
+
+      <label>License Number</label>
+      <input type="text" name="license_number" placeholder="e.g. PH123456" required>
+
+      <label>Set a password</label>
+      <input type="password" name="password" placeholder="Choose a password" required>
+
+      <label>Latitude</label>
+      <input type="number" name="latitude" step="0.0001" placeholder="e.g. 12.9716" required>
+
+      <label>Longitude</label>
+      <input type="number" name="longitude" step="0.0001" placeholder="e.g. 77.5946" required>
+
+      <button type="submit">Create Account</button>
+    </form>
+
+    {% if error %}
+      <div class="error-msg">{{ error }}</div>
+    {% endif %}
+
+    <p style="font-size:12px; color:#999; margin-top:12px; text-align:center;">
+      Already registered? <a href="{{ url_for('pharmacy_login') }}" style="color:#1a7f5a;">Login here</a>
+    </p>
+  </div>
+</div>
+</body>
+</html>
