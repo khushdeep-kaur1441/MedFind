@@ -1,0 +1,68 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+body { background: #f4f7f6; color: #222; padding: 20px; }
+.container { max-width: 700px; margin: 0 auto; }
+
+header { text-align: center; margin-bottom: 25px; }
+header h1 { color: #1a7f5a; font-size: 28px; }
+header p { color: #666; font-size: 14px; margin-top: 4px; }
+
+nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+nav a {
+  text-decoration: none; padding: 8px 16px; border-radius: 20px;
+  background: #fff; color: #1a7f5a; font-size: 13px; font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 6px rgba(0,0,0,0.08); margin-bottom: 15px; }
+
+label { font-size: 13px; color: #555; font-weight: 600; margin-top: 12px; display: block; }
+input, select, button {
+  width: 100%; padding: 12px; margin-top: 8px; border-radius: 8px;
+  border: 1px solid #ddd; font-size: 15px;
+}
+button { background: #1a7f5a; color: white; border: none; font-weight: 600; cursor: pointer; margin-top: 16px; }
+button:hover { background: #14603f; }
+
+.result-item { border-left: 4px solid #1a7f5a; background: #f9fdfb; padding: 12px 15px; border-radius: 8px; margin-top: 10px; }
+.result-item.low { border-left-color: #d99a1b; }
+.result-item.out { border-left-color: #c0392b; opacity: 0.75; }
+.result-item h3 { font-size: 16px; }
+.result-item p { font-size: 13px; color: #666; margin-top: 3px; }
+
+.badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; color: #fff; margin-top: 6px; }
+.badge.available { background: #1a7f5a; }
+.badge.low { background: #d99a1b; }
+.badge.out { background: #c0392b; }
+
+.empty-msg { text-align: center; color: #999; padding: 20px; font-size: 14px; }
+
+.error-msg { background: #fdecea; color: #c0392b; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 13px; text-align: center; }
+.success-msg { background: #e6f7ee; color: #1a7f5a; padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 13px; text-align: center; }
+
+/* Simple CSS bar visual for stock quantity - no chart library needed */
+.stock-bar-track { background: #eee; border-radius: 10px; height: 10px; margin-top: 8px; overflow: hidden; }
+.stock-bar-fill { height: 100%; border-radius: 10px; }
+.stock-bar-fill.available { background: #1a7f5a; }
+.stock-bar-fill.low { background: #d99a1b; }
+.stock-bar-fill.out { background: #c0392b; }
+
+.low-stock-banner {
+  background: #fff4e5; border: 1px solid #d99a1b; color: #8a5a00;
+  padding: 12px 16px; border-radius: 10px; margin-bottom: 15px; font-size: 13px;
+}
+.low-stock-banner strong { display: block; margin-bottom: 4px; }
+
+.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.top-bar span { font-weight: 700; color: #1a7f5a; }
+.logout-btn { width: auto; padding: 8px 14px; margin: 0; background: #c0392b; }
+
+.stock-item { border: 1px solid #eee; border-radius: 10px; padding: 14px; margin-top: 10px; }
+.stock-item-header { display: flex; justify-content: space-between; align-items: center; }
+
+.receipt {
+  background: #f9fdfb; border: 1px dashed #1a7f5a; border-radius: 10px;
+  padding: 15px; margin-top: 15px; font-size: 14px;
+}
+.receipt h3 { color: #1a7f5a; margin-bottom: 8px; }
+.receipt-row { display: flex; justify-content: space-between; margin-top: 4px; }
+.receipt-total { font-weight: 700; border-top: 1px solid #ccc; margin-top: 8px; padding-top: 8px; }
